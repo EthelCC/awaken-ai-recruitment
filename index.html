@@ -355,6 +355,63 @@
     line-height: 1.7;
   }
 
+  /* Why Choose Us */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .why-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 26px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.25s;
+  }
+
+  .why-card:hover {
+    border-color: var(--accent-border);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  .why-card h4 {
+    font-size: 14.5px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+    line-height: 1.5;
+  }
+
+  .why-card p {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  /* CTA Banner */
+  .cta-banner {
+    margin-top: 48px;
+    padding: 36px 32px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-border);
+    border-radius: 16px;
+    text-align: center;
+  }
+
+  .cta-banner p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  .cta-banner strong {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
   /* Location */
   .location-bar {
     display: flex;
@@ -406,6 +463,7 @@
     .card { padding: 24px; }
     .stats { grid-template-columns: repeat(2, 1fr); }
     .benefits-grid { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -545,31 +603,44 @@
     </div>
   </section>
 
-  <!-- Benefits -->
+  <!-- Why Choose Us -->
   <section class="section">
     <div class="section-header">
-      <div class="section-icon">✨</div>
-      <h2 class="section-title">你能得到什么</h2>
+      <div class="section-icon">🔥</div>
+      <h2 class="section-title">Why Choose Us</h2>
     </div>
-    <div class="benefits-grid">
-      <div class="benefit-card">
-        <h4>从 0 到 1 的历程</h4>
-        <p>参与一家 AI 创业公司从 0 到 1 验证自研模型的全过程。</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <h4>已完成 PMF 的全球化 AI Roleplay 产品</h4>
+        <p>产品已跑通 C 端商业闭环，覆盖全球 100+ 国家和地区，具备数据质量高、数据量级大、场景边界清晰、业务目标明确的优势。</p>
       </div>
-      <div class="benefit-card">
-        <h4>直接落地产品</h4>
-        <p>你的模型迭代能直接落地到产品，看到真实的用户反馈和商业回报。</p>
+      <div class="why-card">
+        <h4>小团队，高杠杆，模型策略直接影响产品指标</h4>
+        <p>团队轻量，没有层层汇报和冗长流程。后训练、数据、评测、Prompt/Memory 策略和线上实验之间距离很短。</p>
       </div>
-      <div class="benefit-card">
-        <h4>志同道合的团队</h4>
-        <p>与一群相信 AI 正在重新定义内容体验的人一起工作。我们相信 "懂场景" 和 "懂模型" 同样重要。</p>
+      <div class="why-card">
+        <h4>做离用户最近的后训练，不是实验室里的 benchmark</h4>
+        <p>拒绝"唯分数论"，在 DAU、留存、会话深度、付费转化和用户满意度中优化目标。模型好不好，不只看离线分数，而看用户第二天还会不会回来、愿不愿意继续和这个角色共创故事。</p>
       </div>
-      <div class="benefit-card">
-        <h4>有竞争力的回报</h4>
-        <p>有竞争力的薪酬 + 早期期权。</p>
+      <div class="why-card">
+        <h4>在后训练最难的场景里打硬仗</h4>
+        <p>人设稳定、情绪连贯、剧情推进、长期记忆、角色边界、多语言表达、内容安全，任何一项掉线都会立刻破坏沉浸感。这里的后训练会真正触碰 SFT、偏好优化、记忆机制、角色一致性评测和线上 A/B 的完整闭环。</p>
+      </div>
+      <div class="why-card">
+        <h4>多模态与 UGC 角色生态带来的复杂度</h4>
+        <p>产品支持用户创建角色、设定背景、开场白、声音、图片/视频等多模态体验。模型不只是"会聊天"，还要理解角色设定、用户意图、剧情上下文和创作者生态，让每个角色都能长期、稳定、可信地活在用户的故事里。</p>
+      </div>
+      <div class="why-card">
+        <h4>全球化 To C 战场，反馈密度高</h4>
+        <p>产品天然出海，服务的是 100+ 国家和地区的真实用户。不同语言、文化、审美和互动习惯，会直接进入模型迭代。你做的不是中文互联网小样本优化，而是面向全球用户的 AI 体验工程。</p>
       </div>
     </div>
   </section>
+
+  <!-- CTA -->
+  <div class="cta-banner">
+    <p>与其在官网围观风口，不如加入一个已经跑通商业闭环的创业团队。<br><strong>直接参与，亲手定义下一代 AI 互动体验。</strong></p>
+  </div>
 
   <!-- Location -->
   <div class="location-bar">
