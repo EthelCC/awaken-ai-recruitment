@@ -276,15 +276,66 @@
     background: var(--accent-border);
   }
 
-  /* Job subtitle */
-  .job-subtitle {
-    font-size: 18px;
+  /* Job accordion */
+  .job-accordion {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  .job-accordion + .job-accordion {
+    margin-top: 12px;
+  }
+
+  .job-accordion-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 28px;
+    cursor: pointer;
+    font-size: 16px;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 20px;
-    padding-left: 14px;
-    border-left: 3px solid var(--accent);
-    line-height: 1.4;
+    list-style: none;
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  .job-accordion-title::-webkit-details-marker { display: none; }
+
+  .job-accordion-title::before {
+    content: '▸';
+    margin-right: 12px;
+    color: var(--accent);
+    font-size: 14px;
+    transition: transform 0.2s;
+  }
+
+  .job-accordion[open] > .job-accordion-title::before {
+    transform: rotate(90deg);
+  }
+
+  .job-accordion-title:hover {
+    background: var(--accent-soft);
+  }
+
+  .job-accordion-meta {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .job-accordion-body {
+    padding: 0 28px 28px;
+  }
+
+  .job-accordion-body .card {
+    border: none;
+    box-shadow: none;
+    background: var(--bg);
+    padding: 24px;
   }
 
   /* Job list */
@@ -650,43 +701,49 @@
       <h2 class="section-title">在招岗位</h2>
     </div>
 
-    <h3 class="job-subtitle">大模型后训练算法工程师</h3>
+    <details class="job-accordion" open>
+      <summary class="job-accordion-title">
+        <span>大模型后训练算法工程师</span>
+        <span class="job-accordion-meta">北京 · 全职 · 2-4年经验</span>
+      </summary>
+      <div class="job-accordion-body">
+        <div class="card" style="margin-bottom: 16px;">
+          <div class="card-heading">岗位职责</div>
+          <ul class="job-list">
+            <li>负责公司核心大模型后训练系统及其数据流程的设计、搭建与持续优化，服务于 AI 陪伴、角色对话、多模态交互等核心业务场景。</li>
+            <li>独立完成基于开源底座（如 Qwen/LLaMA 系列）的后训练全流程落地，包括 SFT 监督微调、DPO/RLHF 偏好优化、模型对齐与场景化能力蒸馏。</li>
+            <li>搭建训练数据集与数据标注规范，建立用户反馈闭环机制，基于真实用户交互数据持续迭代模型效果。</li>
+            <li>建立符合业务目标的模型评测体系，推动模型效果的可量化、可迭代。</li>
+            <li>与产品、工程团队紧密协作，将后训练能力工程化，推动模型方案从实验到稳定上线。</li>
+            <li>持续关注并跟进大模型后训练领域的前沿技术。</li>
+          </ul>
+        </div>
 
-    <div class="card" style="margin-bottom: 16px;">
-      <div class="card-heading">岗位职责</div>
-      <ul class="job-list">
-        <li>负责公司核心大模型后训练系统及其数据流程的设计、搭建与持续优化，服务于 AI 陪伴、角色对话、多模态交互等核心业务场景。</li>
-        <li>独立完成基于开源底座（如 Qwen/LLaMA 系列）的后训练全流程落地，包括 SFT 监督微调、DPO/RLHF 偏好优化、模型对齐与场景化能力蒸馏。</li>
-        <li>搭建训练数据集与数据标注规范，建立用户反馈闭环机制，基于真实用户交互数据持续迭代模型效果。</li>
-        <li>建立符合业务目标的模型评测体系，推动模型效果的可量化、可迭代。</li>
-        <li>与产品、工程团队紧密协作，将后训练能力工程化，推动模型方案从实验到稳定上线。</li>
-        <li>持续关注并跟进大模型后训练领域的前沿技术。</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-heading">岗位要求</div>
-      <ul class="job-list">
-        <li>2-4 年大模型后训练实战经验，有大模型微调、对齐、推理优化的完整项目经历。有 AI 对话 / 陪伴 / 虚拟人等场景落地经验者优先。</li>
-        <li>熟练掌握 PyTorch、Hugging Face、Transformers、TRL、DeepSpeed 等主流框架，精通 SFT、DPO、RLHF 等后训练方案。</li>
-        <li>能独立完成数据清洗、训练、评测、迭代优化、上线推理的闭环，具备生产级模型落地能力。</li>
-        <li>关注技术前沿进展，对解决具有挑战性问题充满激情，并可以做合理的优先级判断。</li>
-        <li>对 AI 陪伴产品有热情，对用户体验有体感，能分清 "模型指标涨了" 和 "用户觉得更好了" 之间的差别。</li>
-        <li>具备跨团队合作的经验，有良好的业务判断能力和沟通能力，善于沟通和解决问题。</li>
-      </ul>
-      <div class="tags">
-        <span class="tag">PyTorch</span>
-        <span class="tag">Hugging Face</span>
-        <span class="tag">Transformers</span>
-        <span class="tag">TRL</span>
-        <span class="tag">DeepSpeed</span>
-        <span class="tag">SFT</span>
-        <span class="tag">DPO</span>
-        <span class="tag">RLHF</span>
-        <span class="tag">Qwen</span>
-        <span class="tag">LLaMA</span>
+        <div class="card">
+          <div class="card-heading">岗位要求</div>
+          <ul class="job-list">
+            <li>2-4 年大模型后训练实战经验，有大模型微调、对齐、推理优化的完整项目经历。有 AI 对话 / 陪伴 / 虚拟人等场景落地经验者优先。</li>
+            <li>熟练掌握 PyTorch、Hugging Face、Transformers、TRL、DeepSpeed 等主流框架，精通 SFT、DPO、RLHF 等后训练方案。</li>
+            <li>能独立完成数据清洗、训练、评测、迭代优化、上线推理的闭环，具备生产级模型落地能力。</li>
+            <li>关注技术前沿进展，对解决具有挑战性问题充满激情，并可以做合理的优先级判断。</li>
+            <li>对 AI 陪伴产品有热情，对用户体验有体感，能分清 "模型指标涨了" 和 "用户觉得更好了" 之间的差别。</li>
+            <li>具备跨团队合作的经验，有良好的业务判断能力和沟通能力，善于沟通和解决问题。</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">PyTorch</span>
+            <span class="tag">Hugging Face</span>
+            <span class="tag">Transformers</span>
+            <span class="tag">TRL</span>
+            <span class="tag">DeepSpeed</span>
+            <span class="tag">SFT</span>
+            <span class="tag">DPO</span>
+            <span class="tag">RLHF</span>
+            <span class="tag">Qwen</span>
+            <span class="tag">LLaMA</span>
+          </div>
+        </div>
       </div>
-    </div>
+    </details>
   </section>
 
   <!-- Why Choose Us -->
