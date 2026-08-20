@@ -27,6 +27,8 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  html { scroll-behavior: smooth; }
+
   body {
     font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
     background: var(--bg);
@@ -207,6 +209,7 @@
   /* Sections */
   .section {
     margin-bottom: 56px;
+    scroll-margin-top: 72px;
   }
 
   .section-header {
@@ -457,6 +460,62 @@
     color: var(--text-muted);
   }
 
+  /* Navigation */
+  .nav {
+    position: fixed;
+    top: 4px; left: 0; right: 0;
+    z-index: 99;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+
+  .nav-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+  }
+
+  .nav-logo {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: -0.3px;
+  }
+
+  .nav-logo span {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 6px;
+  }
+
+  .nav-links a {
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
   /* Responsive */
   @media (max-width: 640px) {
     .hero { padding: 72px 0 40px; }
@@ -464,11 +523,25 @@
     .stats { grid-template-columns: repeat(2, 1fr); }
     .benefits-grid { grid-template-columns: 1fr; }
     .why-grid { grid-template-columns: 1fr; }
+    .nav-links a { padding: 6px 10px; font-size: 12px; }
+    .nav-links { gap: 2px; }
   }
 </style>
 </head>
 <body>
 <div class="top-strip"></div>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo"><span>Awaken AI</span></a>
+    <div class="nav-links">
+      <a href="#about">公司概况</a>
+      <a href="#team">核心团队</a>
+      <a href="#funding">融资情况</a>
+      <a href="#job">在招岗位</a>
+      <a href="#why">加入我们的理由</a>
+    </div>
+  </div>
+</nav>
 <div class="bg-decor"></div>
 <div class="bg-decor-2"></div>
 
@@ -511,7 +584,7 @@
   </div>
 
   <!-- About -->
-  <section class="section">
+  <section class="section" id="about">
     <div class="section-header">
       <div class="section-icon">🚀</div>
       <h2 class="section-title">公司概况</h2>
@@ -523,7 +596,7 @@
   </section>
 
   <!-- Team -->
-  <section class="section">
+  <section class="section" id="team">
     <div class="section-header">
       <div class="section-icon">👥</div>
       <h2 class="section-title">核心团队</h2>
@@ -542,7 +615,7 @@
   </section>
 
   <!-- Funding -->
-  <section class="section">
+  <section class="section" id="funding">
     <div class="section-header">
       <div class="section-icon">📈</div>
       <h2 class="section-title">融资情况</h2>
@@ -560,7 +633,7 @@
   </section>
 
   <!-- Job -->
-  <section class="section">
+  <section class="section" id="job">
     <div class="section-header">
       <div class="section-icon">💼</div>
       <h2 class="section-title">大模型后训练算法工程师</h2>
@@ -604,10 +677,10 @@
   </section>
 
   <!-- Why Choose Us -->
-  <section class="section">
+  <section class="section" id="why">
     <div class="section-header">
       <div class="section-icon">🔥</div>
-      <h2 class="section-title">Why Choose Us</h2>
+      <h2 class="section-title">加入我们的理由</h2>
     </div>
     <div class="why-grid">
       <div class="why-card">
