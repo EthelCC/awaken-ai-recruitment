@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Awaken AI - 大模型后训练算法工程师</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+  :root {
+    --bg: #f8f9fc;
+    --bg-white: #ffffff;
+    --accent: #4f46e5;
+    --accent-light: #6366f1;
+    --accent-soft: rgba(79, 70, 229, 0.06);
+    --accent-border: rgba(79, 70, 229, 0.12);
+    --text-primary: #1e1e2e;
+    --text-secondary: #4a4a5a;
+    --text-muted: #8888a0;
+    --border: #e8e8f0;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 40px rgba(79,70,229,0.08);
+    --gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
+    --radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* Top gradient strip */
+  .top-strip {
+    height: 4px;
+    background: var(--gradient);
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+  }
+
+  /* Background decoration */
+  .bg-decor {
+    position: fixed;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(79,70,229,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .bg-decor-2 {
+    position: fixed;
+    bottom: -300px; left: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(168,85,247,0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 100px 0 56px;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 18px;
+    background: var(--bg-white);
+    border: 1px solid var(--accent-border);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 28px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 7px; height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.4); }
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 6vw, 54px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    margin-bottom: 14px;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: 17px;
+    color: var(--text-secondary);
+    font-weight: 400;
+    max-width: 520px;
+    margin: 0 auto 36px;
+    line-height: 1.8;
+  }
+
+  .hero-links {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 26px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+
+  .btn-primary {
+    background: var(--gradient);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(79,70,229,0.25);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(79,70,229,0.35);
+  }
+
+  .btn-outline {
+    background: var(--bg-white);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 56px 0;
+  }
+
+  .stat-item {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.3s;
+  }
+
+  .stat-item:hover {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .section-icon {
+    width: 42px; height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-border);
+    border-radius: 12px;
+    font-size: 18px;
+  }
+
+  .section-title {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--text-primary);
+  }
+
+  .card {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .card p {
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+    font-size: 15px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .highlight {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* Sub heading inside card */
+  .card-heading {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--accent-border);
+  }
+
+  /* Job list */
+  .job-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .job-list li {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    color: var(--text-secondary);
+    font-size: 14.5px;
+    line-height: 1.75;
+  }
+
+  .job-list li::before {
+    content: '';
+    flex-shrink: 0;
+    width: 7px; height: 7px;
+    margin-top: 9px;
+    background: var(--gradient);
+    border-radius: 3px;
+    transform: rotate(45deg);
+  }
+
+  /* Tags */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .tag {
+    padding: 5px 14px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-border);
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  /* Benefits */
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .benefit-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.25s;
+  }
+
+  .benefit-card:hover {
+    border-color: var(--accent-border);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  .benefit-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+  }
+
+  .benefit-card p {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* Location */
+  .location-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 22px 28px;
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-top: 48px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .location-bar .pin { font-size: 22px; }
+
+  .location-bar .info {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .location-bar .info strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 56px 0 40px;
+    border-top: 1px solid var(--border);
+    margin-top: 72px;
+  }
+
+  .footer .company-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .hero { padding: 72px 0 40px; }
+    .card { padding: 24px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .benefits-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="top-strip"></div>
+<div class="bg-decor"></div>
+<div class="bg-decor-2"></div>
+
+<div class="container">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">We Are Hiring</div>
+    <h1>Awaken AI</h1>
+    <p class="hero-subtitle">Real Connection. Real Companionship.<br>用大模型重新定义内容互动体验</p>
+    <div class="hero-links">
+      <a href="https://www.awakenai.org/" target="_blank" class="btn btn-primary">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        公司官网
+      </a>
+      <a href="https://www.awakenai.org/" target="_blank" class="btn btn-outline">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        产品体验
+      </a>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-value">100+</div>
+      <div class="stat-label">覆盖国家和地区</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">$100M+</div>
+      <div class="stat-label">年经营性收入</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">A+轮</div>
+      <div class="stat-label">多轮融资完成</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">PMF ✓</div>
+      <div class="stat-label">商业闭环验证</div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon">🚀</div>
+      <h2 class="section-title">公司概况</h2>
+    </div>
+    <div class="card">
+      <p>Awaken AI 是一家专注于 <span class="highlight">"AIGC + To C + 出海"</span> 的 AI 应用公司，致力于打造全球最大的 AI 互动内容平台。我们深度整合大模型能力，构建 AI 时代的人机交互新范式，主要产品方向涉及 <span class="highlight">AI 虚拟人、情感连接类互动内容</span>等。</p>
+      <p>产品已进入全球 100+ 个国家和地区，完成从 0 到 1 的 PMF 验证及商业闭环，年经营性收入过亿美金。我们正在搭建一支精干的后训练算法团队，通过大模型后训练技术，使模型在陪伴场景中具备<span class="highlight">稳定的人设和连贯的情感</span>，同时极具性价比和竞争力。</p>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon">👥</div>
+      <h2 class="section-title">核心团队</h2>
+    </div>
+    <div class="card">
+      <p>初创型精英团队，人才密度极高。成员多毕业于国内外知名高校，核心团队来自一线互联网大厂。</p>
+      <div class="tags" style="border-top: none; margin-top: 16px; padding-top: 0;">
+        <span class="tag">北京大学</span>
+        <span class="tag">浙江大学</span>
+        <span class="tag">耶鲁大学</span>
+        <span class="tag">字节跳动</span>
+        <span class="tag">阿里巴巴</span>
+        <span class="tag">美团</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Funding -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon">📈</div>
+      <h2 class="section-title">融资情况</h2>
+    </div>
+    <div class="card">
+      <p>公司发展迅速，已完成 <span class="highlight">A+ 轮等多轮融资</span>，投资方阵容豪华：</p>
+      <div class="tags" style="border-top: none; margin-top: 16px; padding-top: 0;">
+        <span class="tag">阿里战投</span>
+        <span class="tag">百度战投</span>
+        <span class="tag">经纬创投</span>
+        <span class="tag">金沙江创投</span>
+        <span class="tag">五源资本</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Job -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon">💼</div>
+      <h2 class="section-title">大模型后训练算法工程师</h2>
+    </div>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <div class="card-heading">岗位职责</div>
+      <ul class="job-list">
+        <li>负责公司核心大模型后训练系统及其数据流程的设计、搭建与持续优化，服务于 AI 陪伴、角色对话、多模态交互等核心业务场景。</li>
+        <li>独立完成基于开源底座（如 Qwen/LLaMA 系列）的后训练全流程落地，包括 SFT 监督微调、DPO/RLHF 偏好优化、模型对齐与场景化能力蒸馏。</li>
+        <li>搭建训练数据集与数据标注规范，建立用户反馈闭环机制，基于真实用户交互数据持续迭代模型效果。</li>
+        <li>建立符合业务目标的模型评测体系，推动模型效果的可量化、可迭代。</li>
+        <li>与产品、工程团队紧密协作，将后训练能力工程化，推动模型方案从实验到稳定上线。</li>
+        <li>持续关注并跟进大模型后训练领域的前沿技术。</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-heading">岗位要求</div>
+      <ul class="job-list">
+        <li>2-4 年大模型后训练实战经验，有大模型微调、对齐、推理优化的完整项目经历。有 AI 对话 / 陪伴 / 虚拟人等场景落地经验者优先。</li>
+        <li>熟练掌握 PyTorch、Hugging Face、Transformers、TRL、DeepSpeed 等主流框架，精通 SFT、DPO、RLHF 等后训练方案。</li>
+        <li>能独立完成数据清洗、训练、评测、迭代优化、上线推理的闭环，具备生产级模型落地能力。</li>
+        <li>关注技术前沿进展，对解决具有挑战性问题充满激情，并可以做合理的优先级判断。</li>
+        <li>对 AI 陪伴产品有热情，对用户体验有体感，能分清 "模型指标涨了" 和 "用户觉得更好了" 之间的差别。</li>
+        <li>具备跨团队合作的经验，有良好的业务判断能力和沟通能力，善于沟通和解决问题。</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">PyTorch</span>
+        <span class="tag">Hugging Face</span>
+        <span class="tag">Transformers</span>
+        <span class="tag">TRL</span>
+        <span class="tag">DeepSpeed</span>
+        <span class="tag">SFT</span>
+        <span class="tag">DPO</span>
+        <span class="tag">RLHF</span>
+        <span class="tag">Qwen</span>
+        <span class="tag">LLaMA</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon">✨</div>
+      <h2 class="section-title">你能得到什么</h2>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <h4>从 0 到 1 的历程</h4>
+        <p>参与一家 AI 创业公司从 0 到 1 验证自研模型的全过程。</p>
+      </div>
+      <div class="benefit-card">
+        <h4>直接落地产品</h4>
+        <p>你的模型迭代能直接落地到产品，看到真实的用户反馈和商业回报。</p>
+      </div>
+      <div class="benefit-card">
+        <h4>志同道合的团队</h4>
+        <p>与一群相信 AI 正在重新定义内容体验的人一起工作。我们相信 "懂场景" 和 "懂模型" 同样重要。</p>
+      </div>
+      <div class="benefit-card">
+        <h4>有竞争力的回报</h4>
+        <p>有竞争力的薪酬 + 早期期权。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location -->
+  <div class="location-bar">
+    <span class="pin">📍</span>
+    <div class="info">
+      <strong>工作地点</strong><br>
+      北京海淀区 · 学清嘉创大厦
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="company-name">Awaken AI · 北京星河觉醒智能科技有限公司</p>
+    <p>Real Connection. Real Companionship.</p>
+  </footer>
+</div>
+</body>
+</html>
